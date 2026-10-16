@@ -34,8 +34,9 @@ if ! [[ "$MAX_FILES" =~ ^[0-9]+$ ]]; then
 fi
 
 # Check if the specified grid file exists
-if [ ! -f "${GRID}.grid" ]; then
-    echo "Error: Grid file '${GRID}.grid' does not exist."
+GRID_FILE="grids/${GRID}.grid"
+if [ ! -f "$GRID_FILE" ]; then
+    echo "Error: Grid file '$GRID_FILE' does not exist."
     exit 1
 fi
 
@@ -59,7 +60,7 @@ for FILE in "$FOLDER"/*.nc; do
     # Process each .nc file
     BASENAME=$(basename "$FILE")
     echo "Processing $BASENAME..."
-    cdo remapbil,${GRID}.grid "$FILE" "$TEMP_DIR/$BASENAME"
+    cdo remapbil,$GRID_FILE "$FILE" "$TEMP_DIR/$BASENAME"
     FILE_COUNT=$((FILE_COUNT + 1))
     if [ "$MAX_FILES" -gt 0 ] && [ "$FILE_COUNT" -ge "$MAX_FILES" ]; then
         break
